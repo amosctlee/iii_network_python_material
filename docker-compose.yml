@@ -12,6 +12,8 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - $PWD/mysql_data:/var/lib/mysql
     
   db-adminer:
     container_name: db-adminer
@@ -19,7 +21,17 @@ services:
     restart: always
     ports:
       - 8080:8080
-    
+  
+  metabase:
+    image: metabase/metabase
+    restart: always
+    environment:
+      MB_DB_FILE: /metabase.db
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD/metabase_data:/metabase.db
+
   dynamodb:
     container_name: dynamodb
     image: amazon/dynamodb-local
